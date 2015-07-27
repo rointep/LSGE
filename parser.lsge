@@ -92,16 +92,19 @@ function setTime(t)
 	TIME = math.floor(t)
 end
 
-function getTime()
-	return TIME
-end
-
 function advanceTime(t)
 	if not t then error("You must provide a time value in milliseconds", 2) end
 	TIME = TIME + math.floor(t)
 end
 
+function getTime()
+	return TIME
+end
 
+local function getTimeInternal(sprite)
+	if sprite.loopRegionActive or sprite.triggerRegionActive then return 0 end
+	return getTime()
+end
 
 
 local layers = { "Background", "Fail", "Pass", "Foreground" }
@@ -140,10 +143,10 @@ function LSGE_BUILD_STORYBOARD()
 
 			for _, cmd in ipairs(v.cmds) do
 				if cmd[2] == "loop_begin" then
-					write(" L" .. "," .. cmd[1] .. "," .. cmd[4])
+					write(" L" .. "," .. cmd[1] .. "," .. cmd[5])
 					region = { cmd[1] }
 				elseif cmd[2] == "trigger_begin" then
-					write(" T" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. cmd[5] .. (cmd[6] and ","..cmd[6] or ""))
+					write(" T" .. "," .. cmd[5] .. "," .. cmd[1] .. "," .. cmd[6] .. (cmd[7] and ","..cmd[7] or ""))
 					region = { cmd[1] }
 				elseif cmd[2] == "loop_end" or cmd[2] == "trigger_end" then
 					region = nil
@@ -297,15 +300,18 @@ setmetatable(Sprite, { __call = Sprite.create })
 
 -- utility
 function Sprite:clone()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return deepcopy(self)
 end
 
 function Sprite:destroy()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	if self then return removevalue(Sprite.__objects[self.layer], self) end
 	return false
 end
 
 function Sprite:setFilepath(filepath)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, filepath)
 	validate_arguments("Sprite:setFilepath", "filepath", filepath)
 	self.filepath = filepath
@@ -313,6 +319,7 @@ function Sprite:setFilepath(filepath)
 end
 
 function Sprite:setLayer(layer)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, layer)
 	validate_arguments("Sprite:setLayer", "layer", layer)
 	removevalue(Sprite.__objects[self.layer], self)
@@ -322,6 +329,7 @@ function Sprite:setLayer(layer)
 end
 
 function Sprite:setOrigin(origin)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, origin)
 	validate_arguments("Sprite:setOrigin", "origin", origin)
 	self.origin = origin
@@ -329,6 +337,7 @@ function Sprite:setOrigin(origin)
 end
 
 function Sprite:clearCommands()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	self.cmds = {}
 	return self
 end
@@ -336,6 +345,7 @@ end
 
 -- delay
 function Sprite:delay(t)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	if self.loopRegionActive or self.triggerRegionActive then
 		self.regionTime = self.regionTime + math.floor(t)
 	else
@@ -345,6 +355,7 @@ function Sprite:delay(t)
 end
 
 function Sprite:setDelayTime(t)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	if not t or type(t) ~= "number" then error("You must provide a time value in milliseconds") end
 	if self.loopRegionActive or self.triggerRegionActive then
 		self.regionTime = math.floor(t)
@@ -356,6 +367,7 @@ end
 
 -- accessors
 function Sprite:getDelayTime()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	if self.loopRegionActive or self.triggerRegionActive then
 		return self.regionTime
 	end
@@ -363,78 +375,96 @@ function Sprite:getDelayTime()
 end
 
 function Sprite:getX()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.x
 end
 
 function Sprite:getY()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.y
 end
 
 function Sprite:getAlpha()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.alpha
 end
 
 function Sprite:getScale()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.sc_scale
 end
 
 function Sprite:getVectorScale()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.vec_scale
 end
 
 function Sprite:getRotation()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.rotation
 end
 
 function Sprite:isFlippedHorizontally()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.hflip
 end
 
 function Sprite:isFlippedVertically()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.vflip
 end
 
 function Sprite:getBlendMode()
+	if not instanceof(self, Sprite) then classUsageError() end
 	return self.blendMode
 end
 
 function Sprite:getColor()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.color_rgb
 end
 
 function Sprite:getFilepath()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.filepath
 end
 
 function Sprite:getLayer()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.layer
 end
 
 function Sprite:getOrigin()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self.origin
 end
 
 
 -- quick visibility toggles
 function Sprite:show()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self:fade(0, 1, 0, Linear)
 end
 
 function Sprite:hide()
+	if not instanceof(self, Sprite) then classUsageError() end	
 	return self:fade(1, 0, 0, Linear)
 end
 
 
 -- fade
 function Sprite:fade(startalpha, endalpha, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(2, startalpha, endalpha)
 	validate_arguments("Sprite:fade", "number", startalpha, "number", endalpha, "number", duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "fade", duration and round(duration) or 0, easing or Linear, startalpha, endalpha })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "fade", duration, easing or Linear, duration == 0 and endalpha or startalpha, endalpha })
 	self.alpha = endalpha
 	return self
 end
 
 function Sprite:fadeTo(endalpha, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(1, endalpha)
 	validate_arguments("Sprite:fadeTo", "number", startalpha, "number", endalpha, "number", duration, "easing", easing)
 	return self:fade(self:getAlpha(), endalpha, duration, easing)
@@ -443,42 +473,51 @@ end
 
 -- move
 function Sprite:move(sx, sy, tx, ty, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(4, sx, sy, tx, ty)
 	validate_arguments("Sprite:move", "number", sx, "number", sy, "number", tx, "number", ty, "number",  duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "move", duration and round(duration) or 0, easing or Linear, round(sx), round(sy), round(tx), round(ty) })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "move", duration, easing or Linear, duration == 0 and round(tx) or round(sx), duration == 0 and round(ty) or round(sy), round(tx), round(ty) })
 	self.x, self.y = round(tx), round(ty)
 	return self
 end
 
 function Sprite:moveTo(tx, ty, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(2, tx, ty)
 	validate_arguments("Sprite:moveTo", "number", tx, "number", ty, "number", duration, "easing", easing)
 	return self:move(self:getX(), self:getY(), tx, ty, duration, easing)
 end
 
 function Sprite:moveX(sx, tx, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(2, sx, tx)
 	validate_arguments("Sprite:moveX", "number", sx, "number", tx, "number", duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "moveX", duration and round(duration) or 0, easing or Linear, round(sx), round(tx) })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "moveX", duration, easing or Linear, duration == 0 and round(tx) or round(sx), round(tx) })
 	self.x = round(tx)
 	return self
 end
 
 function Sprite:moveToX(tx, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, tx)
 	validate_arguments("Sprite:moveToX", "number", tx, "number", duration, "easing", easing)
 	return self:moveX(self:getX(), tx, duration, easing)
 end
 
 function Sprite:moveY(sy, ty, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(2, sy, ty)
 	validate_arguments("Sprite:moveY", "number", sy, "number", ty, "number", duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "moveY", duration and round(duration) or 0, easing or Linear, round(sy), round(ty) })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "moveY", duration, easing or Linear, duration == 0 and round(ty) or round(sy), round(ty) })
 	self.y = round(ty)
 	return self
 end
 
 function Sprite:moveToY(ty, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, ty)
 	validate_arguments("Sprite:moveToY", "number", ty, "number", duration, "easing", easing)
 	return self:moveY(self:getY(), ty, duration, easing)
@@ -487,28 +526,35 @@ end
 
 -- scale
 function Sprite:scale(startscale, endscale, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(2, startscale, endscale)
 	validate_arguments("Sprite:scale", "number", startscale, "number", endscale, "number", duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "scale", duration and round(duration) or 0, easing or Linear, startscale, endscale })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "scale", duration, easing or Linear, duration == 0 and endscale or startscale, endscale })
 	self.sc_scale = endscale
 	return self
 end
 
 function Sprite:scaleTo(endscale, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(1, endscale)
 	validate_arguments("Sprite:scale", "number", endscale, "number", duration, "easing", easing)
 	return self:scale(self:getScale(), endscale, duration, easing)
 end
 
 function Sprite:vecScale(startscale_x, startscale_y, endscale_x, endscale_y, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(4, startscale_x, startscale_y, endscale_x, endscale_y)
 	validate_arguments("Sprite:vecScale", "number", startscale_x, "number", startscale_y, "number", endscale_x, "number", endscale_y, "number", duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "vecScale", duration and round(duration) or 0, easing or Linear, startscale_x, startscale_y, endscale_x, endscale_y })
+	local duration = duration and round(duration) or 0
+
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "vecScale", duration, easing or Linear, duration == 0 and endscale_x or startscale_x, duration == 0 and endscale_y or startscale_y, endscale_x, endscale_y })
 	self.vec_scale = { x = endscale_x, y = endscale_y }
 	return self
 end
 
 function Sprite:vecScaleTo(endscale_x, endscale_y, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(2, endscale_x, endscale_y)
 	validate_arguments("Sprite:vecScaleTo", "number", endscale_x, "number", endscale_y, "number", duration, "easing", easing)
 	return self:vecScale(self:getVectorScale().x, self:getVectorScale().y, endscale_x, endscale_y, duration, easing)
@@ -517,14 +563,17 @@ end
 
 -- rotate
 function Sprite:rotate(fromradians, toradians, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(2, fromradians, toradians)
 	validate_arguments("Sprite:rotate", "number", fromradians, "number", toradians, "number", duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "rotate", duration and round(duration) or 0, easing or Linear, fromradians, toradians })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "rotate", duration, easing or Linear, duration == 0 and toradians or fromradians, toradians })
 	self.rotation = rotation
 	return self
 end
 
 function Sprite:rotateTo(toradians, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, toradians)
 	validate_arguments("Sprite:rotate", "number", toradians, "number", duration, "easing", easing)
 	return self:rotate(self:getRotation(), toradians, duration, easing)
@@ -533,14 +582,17 @@ end
 
 -- color
 function Sprite:color(sr, sg, sb, tr, tg, tb, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(6, sr, sg, sb, tr, tg, tb)
 	validate_arguments("Sprite:color", "number", sr, "number", sg, "number", sb, "number", tr, "number", tg, "number", tb, "number",  duration, "easing", easing)
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "color", duration and round(duration) or 0, easing or Linear, round(sr), round(sg), round(sb), round(tr), round(tg), round(tb) })
+	local duration = duration and round(duration) or 0
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "color", duration, easing or Linear, duration == 0 and round(tr) or round(sr), duration == 0 and round(tg) or round(sg), duration == 0 and round(tb) or round(sb), round(tr), round(tg), round(tb) })
 	self.color_rgb = { r = round(tr), g = round(tg), b = round(tb) }
 	return self
 end
 
 function Sprite:colorTo(tr, tg, tb, duration, easing)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(3, tr, tg, tb)
 	validate_arguments("Sprite:colorTo", "number", tr, "number", tg, "number", tb, "number",  duration, "easing", easing)
 	return self:color(self:getColor().r, self:getColor().g, self:getColor().b, tr, tg, tb, duration, easing)
@@ -549,30 +601,33 @@ end
 
 -- parameters
 function Sprite:setHorizontalFlip(flipped)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, flipped)
 	validate_arguments("Sprite:setHorizontalFlip", "boolean", flipped)
 	if self.hflip ~= flipped then
-		table.insert(self.cmds, { round(TIME + self:getDelayTime()), "hflip", 0, Linear, flipped })
+		table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "hflip", 0, Linear, flipped })
 		self.hflip = flipped
 	end
 	return self
 end
 
 function Sprite:setVerticalFlip(flipped)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, flipped)
 	validate_arguments("Sprite:setVerticalFlip", "boolean", flipped)
 	if self.vflip ~= flipped then
-		table.insert(self.cmds, { round(TIME + self:getDelayTime()), "vflip", 0, Linear, flipped })
+		table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "vflip", 0, Linear, flipped })
 		self.vflip = flipped
 	end
 	return self
 end
 
 function Sprite:setBlendMode(mode)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(1, mode)
 	validate_arguments("Sprite:setBlendMode", "blendmode", mode)
 	if self.blendMode ~= flipped then
-		table.insert(self.cmds, { round(TIME + self:getDelayTime()), "blendmode", 0, Linear, mode })
+		table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "blendmode", 0, Linear, mode })
 		self.blendMode = mode
 	end
 	return self
@@ -581,38 +636,42 @@ end
 
 -- loop
 function Sprite:beginLoopRegion(n)
+	if not instanceof(self, Sprite) then classUsageError() end	
 	require_arguments(1, n)
 	validate_arguments("Sprite:beginLoopRegion", "number", n)
 	if self.loopRegionActive then error("End the currently open loop region before starting a new one", 2) end
 	if self.triggerRegionActive then error("End the currently open event region before starting a loop region", 2) end
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "loop_begin", 0, Linear, n })
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "loop_begin", 0, Linear, n })
 	self.loopRegionActive = true
 	self.regionTime = 0
 	return self
 end
 
 function Sprite:endLoopRegion()
+	if not instanceof(self, Sprite) then classUsageError() end
 	if not self.loopRegionActive then error("Loop region not started", 2) end
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "loop_end", 0, Linear })
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "loop_end", 0, Linear })
 	self.loopRegionActive = false
 	self.regionTime = nil
 	return self
 end
 
 function Sprite:beginEventRegion(event, starttime, endtime, group)
+	if not instanceof(self, Sprite) then classUsageError() end
 	require_arguments(3, event, starttime, endtime)
 	validate_arguments("Sprite:beginEventRegion", "string", event, "number", starttime, "number", endtime, "number", group)
 	if self.loopRegionActive then error("End the currently open loop region before starting an event region", 2) end
 	if self.triggerRegionActive then error("End the currently open event region before starting a new one", 2) end
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "trigger_begin", 0, Linear, event, endtime, group })
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "trigger_begin", 0, Linear, event, endtime, group })
 	self.triggerRegionActive = true
 	self.regionTime = 0
 	return self
 end
 
 function Sprite:endEventRegion()
+	if not instanceof(self, Sprite) then classUsageError() end
 	if not self.triggerRegionActive then error("Event region not started", 2) end
-	table.insert(self.cmds, { round(TIME + self:getDelayTime()), "trigger_end", 0, Linear })
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "trigger_end", 0, Linear })
 	self.triggerRegionActive = false
 	self.regionTime = nil
 	return self
@@ -726,6 +785,19 @@ function verify_enum(enum, value)
 		return (value == Blend or value == Additive)
 	elseif enum == "looptype" then
 		return (value == LoopForever or value == LoopOnce)
+	end
+	return false
+end
+
+function classUsageError()
+	error("Syntax error - use the colon operator to call class methods", 3)
+end
+
+function instanceof(object, class)
+	local mt = getmetatable(object)
+	while mt and mt.__index do
+		if mt.__index == class then return true end
+		mt = getmetatable(mt.__index)
 	end
 	return false
 end
