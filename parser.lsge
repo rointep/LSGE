@@ -150,35 +150,35 @@ function LSGE_BUILD_STORYBOARD()
 				end
 
 				if cmd[2] == "fade" then
-					write((region and " " or "") .. " F" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. (cmd[4] ~= cmd[5] and ","..cmd[5] or ""))
+					write((region and " " or "") .. " F" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. (cmd[5] ~= cmd[6] and ","..cmd[6] or ""))
 				end
 
 				if cmd[2] == "move" then
-					write((region and " " or "") .. " M" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7])
+					write((region and " " or "") .. " M" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7] .. "," .. cmd[8])
 				end	
 
 				if cmd[2] == "moveX" then
-					write((region and " " or "") .. " MX" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. (cmd[4] ~= cmd[5] and ","..cmd[5] or ""))
+					write((region and " " or "") .. " MX" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. (cmd[5] ~= cmd[6] and ","..cmd[6] or ""))
 				end
 
 				if cmd[2] == "moveY" then
-					write((region and " " or "") .. " MY" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. (cmd[4] ~= cmd[5] and ","..cmd[5] or ""))
+					write((region and " " or "") .. " MY" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. (cmd[5] ~= cmd[6] and ","..cmd[6] or ""))
 				end
 
 				if cmd[2] == "scale" then
-					write((region and " " or "") .. " S" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. (cmd[4] ~= cmd[5] and ","..cmd[5] or ""))
+					write((region and " " or "") .. " S" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. (cmd[5] ~= cmd[6] and ","..cmd[6] or ""))
 				end
 
 				if cmd[2] == "vecScale" then
-					write((region and " " or "") .. " V" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7])
+					write((region and " " or "") .. " V" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7] .. "," .. cmd[8])
 				end
 
 				if cmd[2] == "rotate" then
-					write((region and " " or "") .. " R" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. (cmd[4] ~= cmd[5] and ","..cmd[5] or ""))
+					write((region and " " or "") .. " R" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. (cmd[5] ~= cmd[6] and ","..cmd[6] or ""))
 				end
 
 				if cmd[2] == "color" then
-					write((region and " " or "") .. " C" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[4] .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7] .. "," .. cmd[8] .. "," .. cmd[9])
+					write((region and " " or "") .. " C" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7] .. "," .. cmd[8] .. "," .. cmd[9] .. "," .. cmd[9])
 				end
 
 				if cmd[2] == "hflip" then
@@ -262,11 +262,11 @@ function Sprite:create(filepath, layer, origin, x, y) --Sprite (filepath, layer,
 
 	local o = {
 		filepath = filepath,
-		layer = layer or Layer.Background,
-		origin = origin or Origin.TopLeft,
+		layer = layer or Background,
+		origin = origin or TopLeft,
 		sourceX = x and round(x) or 0,
 		sourceY = y and round(y) or 0,
-		alpha = 0,
+		alpha = 1,
 		sc_scale = 1,
 		vec_scale = { x = 1, y = 1},
 		rotation = 0,
