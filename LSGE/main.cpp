@@ -5,7 +5,7 @@
 
 static void show_usage_message(std::string name)
 {
-	std::cerr << "Usage: " << name << " SOURCEFILE <option(s)>" << std::endl
+	std::cerr << "Usage: " << name << " SCRIPTFILE <option(s)>" << std::endl
 		<< "Options:" << std::endl
 		<< "\t-h \t\t\tShow this help message." << std::endl
 		<< "\t-d DESTINATION\t\tSpecify the filepath for the generated code. Defaults to 'output.osb'." << std::endl;
@@ -13,7 +13,7 @@ static void show_usage_message(std::string name)
 
 int main(int argc, char* argv[])
 {
-	std::cout << "LSGE - Version 1.0.0 -" << std::endl;
+	std::cout << "LSGE - Version 1.0.1 -" << std::endl;
 
 	if (argc < 2) {
 		show_usage_message(argv[0]);
@@ -43,8 +43,8 @@ int main(int argc, char* argv[])
 	luaL_openlibs(L);
 
 	// Run our parser code
-	if (luaL_dofile(L, "parser.lsge") != 0) {
-		std::cerr << "The program failed to initialize. Please make sure that 'parser.lsge' exists in the program's running directory and is readable by the system." << std::endl << std::endl << lua_tostring(L, -1) << std::endl;
+	if (luaL_dofile(L, "lsge_compiler.lua") != 0) {
+		std::cerr << "The program failed to initialize. Please make sure that 'lsge_compiler.lua' file exists in the program's running directory and is readable by the system." << std::endl << std::endl << lua_tostring(L, -1) << std::endl;
 		lua_pop(L, 1);
 		return -1;
 	}
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 
 	lua_getglobal(L, "LSGE_BUILD_STORYBOARD");
 	if (!lua_isfunction(L, -1))	{
-		std::cerr << "Unable to generate storyboard file. The 'parser.lsge' file may be corrupt." << std::endl;
+		std::cerr << "Unable to generate storyboard file. The 'lsge_compiler.lua' file may be corrupt." << std::endl;
 		lua_pop(L, 1);
 		return -1;
 	}
