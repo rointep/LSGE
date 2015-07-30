@@ -7,7 +7,7 @@ LSGE (Lua Storyboard Generator Engine) is a fast osu! storyboard generation appl
 You can download the latest stable version of LSGE from the [releases](../../releases) page.
 
 ### Building from source
-While the parser is written in pure Lua, you can build the executable from source if you want. You'll need Lua 5.3 binaries and header files in order to compile.
+While the parser is written in pure Lua, you can build the executable from source if you want. You'll need Lua 5.3 binaries and header files in order to compile (you can download them [here](http://sourceforge.net/projects/luabinaries/)).
 The application comes as a Visual Studio 2013 project. Make sure to include the _lsge_compiler.lua_ script with your executable.¸
 
 ### Compiling storyboard scripts
