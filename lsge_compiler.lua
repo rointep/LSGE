@@ -181,7 +181,7 @@ function LSGE_BUILD_STORYBOARD()
 				end
 
 				if cmd[2] == "color" then
-					write((region and " " or "") .. " C" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7] .. "," .. cmd[8] .. "," .. cmd[9] .. "," .. cmd[9])
+					write((region and " " or "") .. " C" .. "," .. cmd[4] .. "," .. cmd[1] .. "," .. (cmd[3] > 0 and cmd[1] + cmd[3] or "") .. "," .. cmd[5] .. "," .. cmd[6] .. "," .. cmd[7] .. "," .. cmd[8] .. "," .. cmd[9] .. "," .. cmd[10])
 				end
 
 				if cmd[2] == "hflip" then
@@ -641,7 +641,7 @@ function Sprite:beginLoopRegion(n)
 	validate_arguments("Sprite:beginLoopRegion", "number", n)
 	if self.loopRegionActive then error("End the currently open loop region before starting a new one", 2) end
 	if self.triggerRegionActive then error("End the currently open event region before starting a loop region", 2) end
-	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "loop_begin", 0, Linear, n })
+	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "loop_begin", 0, Linear, round(n) })
 	self.loopRegionActive = true
 	self.regionTime = 0
 	return self
@@ -662,7 +662,7 @@ function Sprite:beginEventRegion(event, starttime, endtime, group)
 	validate_arguments("Sprite:beginEventRegion", "string", event, "number", starttime, "number", endtime, "number", group)
 	if self.loopRegionActive then error("End the currently open loop region before starting an event region", 2) end
 	if self.triggerRegionActive then error("End the currently open event region before starting a new one", 2) end
-	table.insert(self.cmds, { round(getTimeInternal(self) + self:getDelayTime()), "trigger_begin", 0, Linear, event, endtime, group })
+	table.insert(self.cmds, { round(starttime), "trigger_begin", 0, Linear, event, round(endtime), group })
 	self.triggerRegionActive = true
 	self.regionTime = 0
 	return self
@@ -692,7 +692,7 @@ function AnimatedSprite:create(filepath, layer, origin, x, y, frameCount, frameD
 	local o = Sprite(filepath, layer, origin, x, y)
 	o.isAnimated = true
 	o.frameCount = frameCount or 1
-	o.frameDelay = frameDelay or 50
+	o.frameDelay = frameDelay and round(frameDelay) or 50
 	o.loopType = loopType or LoopForever
 
 	setmetatable(o, { __index = AnimatedSprite })

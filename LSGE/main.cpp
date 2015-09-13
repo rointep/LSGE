@@ -13,7 +13,7 @@ static void show_usage_message(std::string name)
 
 int main(int argc, char* argv[])
 {
-	std::cout << "LSGE - Version 1.0.1 -" << std::endl;
+	std::cout << "LSGE Version 1.0.2" << std::endl;
 
 	if (argc < 2) {
 		show_usage_message(argv[0]);
