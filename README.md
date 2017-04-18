@@ -24,7 +24,7 @@ Options:
 ```
 # Documentation
 
-Visit the [Wiki](wiki) for detailed information about functions and methods available.
+Visit the [Wiki](https://github.com/rointep/LSGE/wiki) for detailed information about functions and methods available.
 
 # License
 
