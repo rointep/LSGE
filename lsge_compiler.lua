@@ -52,13 +52,13 @@ Foreground			= "Foreground"
 
 -- origin
 TopLeft				= "TopLeft"
-TopCentre			= "TopCentre"
+TopCenter			= "TopCentre"
 TopRight			= "TopRight"
-CentreLeft			= "CentreLeft"
-Centre				= "Centre"
-CentreRight			= "CentreRight"
+CenterLeft			= "CentreLeft"
+Center				= "Centre"
+CenterRight			= "CentreRight"
 BottomLeft			= "BottomLeft"
-BottomCentre		= "BottomCentre"
+BottomCenter		= "BottomCentre"
 BottomRight			= "BottomRight"
 
 -- blend modes
@@ -71,13 +71,13 @@ LoopOnce 			= "LoopOnce"
 
 -- screen anchor points
 ScreenTopLeft 		= { x = 0	, 	y = 0	}
-ScreenTopCentre		= { x = 0	, 	y = 240	}
+ScreenTopCenter		= { x = 0	, 	y = 240	}
 ScreenTopRight		= { x = 0	, 	y = 480	}
-ScreenCentreLeft	= { x = 320	, 	y = 0	}
-ScreenCentre		= { x = 320	, 	y = 240	}
-ScreenCentreRight	= { x = 320	, 	y = 480	}
+ScreenCenterLeft	= { x = 320	, 	y = 0	}
+ScreenCenter		= { x = 320	, 	y = 240	}
+ScreenCenterRight	= { x = 320	, 	y = 480	}
 ScreenBottomLeft	= { x = 640	, 	y = 0	}
-ScreenBottomCentre	= { x = 640	, 	y = 240	}
+ScreenBottomCenter	= { x = 640	, 	y = 240	}
 ScreenBottomRight	= { x = 640	, 	y = 480	}
 
 
@@ -778,7 +778,7 @@ function verify_enum(enum, value)
 	if enum == "layer" then
 		return (value == Background or value == Fail or value == Pass or value == Foreground)
 	elseif enum == "origin" then
-		return (value == TopLeft or value == TopCentre or value == TopRight or value == CentreLeft or value == Centre or value == CentreRight or value == BottomLeft or value == BottomCentre or value == BottomRight)
+		return (value == TopLeft or value == TopCenter or value == TopRight or value == CenterLeft or value == Center or value == CenterRight or value == BottomLeft or value == BottomCenter or value == BottomRight)
 	elseif enum == "easing" then
 		return (tonumber(value) and value >= 0 and value <= 34)
 	elseif enum == "blendmode" then
